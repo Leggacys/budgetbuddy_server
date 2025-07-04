@@ -1,0 +1,15 @@
+{
+  "cSpell.words": [
+    "appctx",
+    "autoflush",
+    "budgetbuddy",
+    "dotenv",
+    "jsonify",
+    "nord",
+    "nordigen",
+    "nordingen",
+    "reqctx",
+    "sessionmaker"
+  ],
+  "python.analysis.extraPaths": ["./app"]
+}
