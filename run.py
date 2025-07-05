@@ -1,15 +1,27 @@
 import asyncio
-from quart import Quart
-from app.jobs.token_validity import token_refresh_job
-from app.database.db import init_db
-from app.main_routes import routes
+from app import create_app, setup_app
 
-app = Quart(__name__)
-app.register_blueprint(routes)
+app = create_app()
 
 async def main():
-    await init_db()
-    asyncio.create_task(token_refresh_job())
+    await setup_app()
+    
+    # Print all registered endpoints for debugging
+    print("\n" + "="*50)
+    print("🚀 REGISTERED ENDPOINTS:")
+    print("="*50)
+    
+    endpoint_count = 0
+    for rule in app.url_map.iter_rules():
+        methods = ', '.join(rule.methods - {'HEAD', 'OPTIONS'})
+        print(f"{methods:10} {rule.rule}")
+        endpoint_count += 1
+    
+    print("="*50)
+    print(f"📊 Total endpoints: {endpoint_count}")
+    print(f"📡 Server starting on http://0.0.0.0:5000")
+    print("="*50 + "\n")
+    
     await app.run_task(host="0.0.0.0", port=5000, debug=True)
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ from app.database.methods.get_requisition_db import get_requisition
 from app.nordingen.methods.get_all_transactions import get_all_transactions
 
 
-@routes.route("/get_transactions", methods=["GET"])
+@routes.route("/nordingen-get-transactions", methods=["GET"])
 async def get_transactions():
     email = request.args.get("email")
     if not email:

@@ -1,7 +1,6 @@
 import httpx
 from app.database.methods.get_token_from_db import get_token_from_db
-
-BASE_URL = "https://bankaccountdata.gocardless.com/api/v2"
+from app.config import NORDIGEN_API_URL
 
 async def get_all_transactions(requisition_id: str):
     access_token = await get_token_from_db()
@@ -12,7 +11,7 @@ async def get_all_transactions(requisition_id: str):
 
     async with httpx.AsyncClient() as client:
         
-        requisition_url = f"{BASE_URL}/requisitions/{requisition_id}/"
+        requisition_url = f"{NORDIGEN_API_URL}/requisitions/{requisition_id}/"
         req_response = await client.get(requisition_url, headers=headers)
         req_response.raise_for_status()
         requisition_data = req_response.json()
@@ -25,7 +24,7 @@ async def get_all_transactions(requisition_id: str):
         all_transactions = []
         
         for account_id in account_ids:
-            transactions_url = f"{BASE_URL}/accounts/{account_id}/transactions/"
+            transactions_url = f"{NORDIGEN_API_URL}/accounts/{account_id}/transactions/"
             tx_response = await client.get(transactions_url, headers=headers)
             tx_response.raise_for_status()
             tx_data = tx_response.json()

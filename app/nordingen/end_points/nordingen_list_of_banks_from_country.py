@@ -3,7 +3,7 @@ from app.main_routes import routes
 from app.nordingen.methods.list_of_banks_from_country import get_banks_list_by_country
 
 
-@routes.route("/list-of-banks-from-country",methods=["GET"])
+@routes.route("/nordingen-list-of-banks-from-country",methods=["GET"])
 async def list_of_banks_from_country():
     country_code = request.args.get("country_code")
     
