@@ -16,32 +16,74 @@ class Tokens(Base):
     @hybrid_property
     def access_token(self):
         """Decrypt access token when accessing"""
-        if self._access_token:
-            return token_encryption.decrypt_token(self._access_token)
-        return self._access_token
+        try:
+            # Get the raw attribute value
+            raw_value = object.__getattribute__(self, '_access_token')
+            
+            # Handle None or empty strings
+            if raw_value is None or raw_value == "":
+                return raw_value
+            
+            # Only decrypt if it's a string (encrypted value)
+            if isinstance(raw_value, str):
+                return token_encryption.decrypt_token(raw_value)
+            
+            # For SQL query expressions, return the column
+            return raw_value
+        except AttributeError:
+            # Attribute doesn't exist yet
+            return None
+        except Exception as e:
+            # If anything goes wrong, return None
+            return None
     
     @access_token.setter
     def access_token(self, value):
         """Encrypt access token when setting"""
-        if value is not None:
+        if value is not None and value != "":
             self._access_token = token_encryption.encrypt_token(value)
         else:
-            self._access_token = None
+            # Handle both None and empty string consistently
+            if value == "":
+                self._access_token = token_encryption.encrypt_token("")
+            else:
+                self._access_token = None
     
     @hybrid_property
     def refresh_token(self):
         """Decrypt refresh token when accessing"""
-        if self._refresh_token:
-            return token_encryption.decrypt_token(self._refresh_token)
-        return self._refresh_token
+        try:
+            # Get the raw attribute value
+            raw_value = object.__getattribute__(self, '_refresh_token')
+            
+            # Handle None or empty strings
+            if raw_value is None or raw_value == "":
+                return raw_value
+            
+            # Only decrypt if it's a string (encrypted value)
+            if isinstance(raw_value, str):
+                return token_encryption.decrypt_token(raw_value)
+            
+            # For SQL query expressions, return the column
+            return raw_value
+        except AttributeError:
+            # Attribute doesn't exist yet
+            return None
+        except Exception as e:
+            # If anything goes wrong, return None
+            return None
     
     @refresh_token.setter
     def refresh_token(self, value):
         """Encrypt refresh token when setting"""
-        if value is not None:
+        if value is not None and value != "":
             self._refresh_token = token_encryption.encrypt_token(value)
         else:
-            self._refresh_token = None
+            # Handle both None and empty string consistently
+            if value == "":
+                self._refresh_token = token_encryption.encrypt_token("")
+            else:
+                self._refresh_token = None
     
     def is_access_expired(self):
         """Check if access token is expired"""

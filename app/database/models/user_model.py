@@ -26,17 +26,25 @@ class User(Base):
     @hybrid_property
     def email(self):
         """Decrypt email when accessing it"""
-        if self._email:
-            return email_encryption.decrypt(self._email)
-        return self._email
+        if hasattr(self, '_email'):
+            if self._email is None:
+                return None
+            elif isinstance(self._email, str):
+                decrypted = email_encryption.decrypt(self._email)
+                return decrypted
+        return None
     
     @email.setter
     def email(self, value):
         """Encrypt email when setting it"""
-        if value is not None:
+        if value is not None and value != "":
             self._email = email_encryption.encrypt(value)
         else:
-            self._email = None
+            # Handle both None and empty string consistently
+            if value == "":
+                self._email = email_encryption.encrypt("")
+            else:
+                self._email = None
     
     @staticmethod
     async def find_by_email(session, email):
@@ -48,10 +56,14 @@ class User(Base):
         
         for user in users:
             try:
-                if user.email == email:
-                    return user
-            except Exception:
+                # Ensure the user object is properly loaded
+                if hasattr(user, '_email') and user._email:
+                    decrypted_email = email_encryption.decrypt(user._email)
+                    if decrypted_email == email:
+                        return user
+            except Exception as e:
                 # Skip users with corrupted email data
+                print(f"Warning: Could not decrypt email for user {user.id}: {e}")
                 continue
         return None
     

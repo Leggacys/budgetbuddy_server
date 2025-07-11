@@ -35,6 +35,11 @@ class TokenEncryption:
         if not token:
             return token
         
+        # Handle non-string inputs
+        if not isinstance(token, str):
+            print(f"❌ Token encryption error: Expected string, got {type(token)}")
+            return ""
+        
         try:
             encrypted = self.cipher.encrypt(token.encode())
             return base64.urlsafe_b64encode(encrypted).decode()
@@ -46,6 +51,11 @@ class TokenEncryption:
         """Decrypt token string"""
         if not encrypted_token:
             return encrypted_token
+        
+        # Handle non-string inputs (like SQLAlchemy InstrumentedAttribute)
+        if not isinstance(encrypted_token, str):
+            print(f"❌ Token decryption error: Expected string, got {type(encrypted_token)}")
+            return ""
         
         try:
             decoded = base64.urlsafe_b64decode(encrypted_token.encode())
