@@ -4,6 +4,7 @@
     "autoflush",
     "budgetbuddy",
     "dotenv",
+    "fernet",
     "jsonify",
     "nord",
     "nordigen",
