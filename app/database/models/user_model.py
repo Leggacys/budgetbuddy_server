@@ -49,8 +49,6 @@ class User(Base):
     @staticmethod
     async def find_by_email(session, email):
         """Find user by email (handles encryption internally)"""
-        # Get all users and compare decrypted emails
-        # This is inefficient but necessary with Fernet encryption
         result = await session.execute(select(User))
         users = result.scalars().all()
         

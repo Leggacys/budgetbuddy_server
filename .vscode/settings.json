@@ -1,15 +1,21 @@
 {
   "cSpell.words": [
+    "alimentara",
     "appctx",
     "autoflush",
     "budgetbuddy",
     "dotenv",
     "fernet",
     "jsonify",
+    "kaufland",
+    "lidl",
     "nord",
     "nordigen",
     "nordingen",
+    "pizzerie",
+    "profi",
     "reqctx",
+    "selgros",
     "sessionmaker"
   ],
   "python.analysis.extraPaths": ["./app"]
