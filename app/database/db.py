@@ -1,8 +1,6 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from app.database.base import Base
-from app.database.models import user_model,tokens_model,bank_links_model
-
 DATABASE_URL = "postgresql+asyncpg://myuser:user!@localhost:5432/budget_buddy"
 
 
