@@ -5,10 +5,12 @@ from app.main_routes import routes
 from app.database.db import AsyncSessionLocal
 from app.database.models.user_model import User
 from app.utils.security.jwt_utils import jwt_manager
+from app.utils.security.rate_limit import rate_limit
 
 GOOGLE_TOKEN_INFO_URL = "https://oauth2.googleapis.com/tokeninfo"
 
 @routes.route("/login", methods=["POST"])
+@rate_limit(max_attempts=5, window_seconds=60) 
 async def login():
     data = await request.get_json()
     
