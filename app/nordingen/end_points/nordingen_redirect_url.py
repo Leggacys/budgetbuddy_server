@@ -1,8 +1,10 @@
 from quart import jsonify, request
 from app.main_routes import routes
 from app.nordingen.methods.get_requisition import get_requisition
+from app.utils.security.jwt_utils import require_jwt
 
 @routes.route("/nordigen-redirect-url", methods=["GET"])
+@require_jwt
 async def nordigen_redirect_url():
     email = request.args.get("email")
     bank_id = request.args.get("bank_id")

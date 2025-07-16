@@ -3,9 +3,11 @@ import httpx
 from app.main_routes import routes
 from app.database.methods.get_token_from_db import get_token_from_db
 from app.config import NORDIGEN_API_URL
+from app.utils.security.jwt_utils import require_jwt
 
 
 @routes.route("/debug/test-requisition", methods=["POST"])
+@require_jwt
 async def test_requisition_debug():
     """Debug endpoint to test requisition verification"""
     data = await request.get_json()
