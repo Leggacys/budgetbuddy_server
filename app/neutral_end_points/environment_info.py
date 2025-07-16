@@ -4,9 +4,11 @@ from app.config import (
     ENVIRONMENT, IS_SANDBOX, NORDIGEN_API_URL, 
     SANDBOX_INSTITUTION_ID, REDIRECT_URI
 )
+from app.utils.security.jwt_utils import require_jwt
 
 
 @routes.route("/environment", methods=["GET"])
+@require_jwt
 async def get_environment():
     """Get current environment configuration"""
     return jsonify({

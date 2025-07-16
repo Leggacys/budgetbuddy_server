@@ -1,9 +1,11 @@
 from quart import jsonify, request
 from app.main_routes import routes
 from app.nordingen.methods.list_of_banks_from_country import get_banks_list_by_country
+from app.utils.security.jwt_utils import require_jwt
 
 
 @routes.route("/nordingen-list-of-banks-from-country",methods=["GET"])
+@require_jwt
 async def list_of_banks_from_country():
     country_code = request.args.get("country_code")
     

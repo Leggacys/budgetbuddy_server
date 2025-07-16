@@ -5,9 +5,11 @@ from app.main_routes import routes
 from app.database.methods.get_requisition_db import get_requisition
 from app.nordingen.methods.get_all_transactions import get_all_transactions
 from app.utils.transactions.extract_essentials_transactions import extract_essentials_transactions
+from app.utils.security.jwt_utils import require_jwt
 
 
 @routes.route("/nordingen-get-transactions", methods=["GET"])
+@require_jwt
 async def get_transactions():
     email = request.args.get("email")
     if not email:

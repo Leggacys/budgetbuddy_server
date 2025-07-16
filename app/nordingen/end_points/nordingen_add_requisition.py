@@ -6,9 +6,11 @@ from app.main_routes import routes
 from app.database.methods.get_user_id import get_user_id
 from app.database.methods.get_token_from_db import get_token_from_db
 from app.config import NORDIGEN_API_URL
+from app.utils.security.jwt_utils import require_jwt
 
 
 @routes.route("/nordigen-add-requisition", methods=["POST"])
+@require_jwt
 async def nordigen_add_requisition():
     data = await request.get_json()
     requisition_id = data.get("requisition_id")

@@ -1,7 +1,10 @@
+from functools import wraps
 import jwt
 import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any
+
+from quart import request
 
 class JWTManager:
     def __init__(self, secret_key: Optional[str] = None):
@@ -83,5 +86,21 @@ class JWTManager:
             user_email=payload["email"],
             user_id=payload.get("user_id")
         )
+        
 
 jwt_manager = JWTManager()
+
+
+def require_jwt(f):
+    @wraps(f)
+    async def decorated(*args, **kwargs):
+        auth_header = request.headers.get("Authorization", "")
+        if not auth_header.startswith("Bearer "):
+            return {"error": "No token provided"}, 401
+        
+        token = auth_header.split(" ")[1]
+        payload = jwt_manager.verify_token(token)
+        if not payload or payload.get("type") != "access_token":
+            return {"error": "Invalid or expired token"}, 401
+        
+        return decorated

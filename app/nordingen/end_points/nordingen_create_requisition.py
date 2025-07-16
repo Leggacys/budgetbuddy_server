@@ -5,10 +5,12 @@ from app.main_routes import routes
 from app.config import REDIRECT_URI, NORDIGEN_API_URL, IS_SANDBOX, SANDBOX_INSTITUTION_ID
 from app.nordingen.methods.get_nordingen_access_token import get_nordigen_access_token
 from app.env_loader import load_redirect_uri
+from app.utils.security.jwt_utils import require_jwt
 
 print("🔄 Loading nordigen_create_requisition.py - Route: /nordingen-create-requisition")
 
 @routes.route("/nordingen-create-requisition", methods=["POST"])
+@require_jwt
 async def create_requisition():
     data = await request.get_json()
     institution_id = data.get("institution_id")
