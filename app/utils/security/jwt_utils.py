@@ -103,4 +103,6 @@ def require_jwt(f):
         if not payload or payload.get("type") != "access_token":
             return {"error": "Invalid or expired token"}, 401
         
-        return decorated
+        return await f(*args, **kwargs)
+        
+    return decorated
