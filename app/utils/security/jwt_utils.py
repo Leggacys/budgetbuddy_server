@@ -95,6 +95,8 @@ def require_jwt(f):
     @wraps(f)
     async def decorated(*args, **kwargs):
         auth_header = request.headers.get("Authorization", "")
+        
+        print(f"🔑 Authorization header: {auth_header}")
         if not auth_header.startswith("Bearer "):
             return {"error": "No token provided"}, 401
         

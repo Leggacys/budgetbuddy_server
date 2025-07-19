@@ -21,7 +21,6 @@ async def get_transactions():
     
     print(f"🔄 Fetching transactions for {len(requisition_ids)} requisitions in parallel...")
     
-    # ✨ PARALLEL PROCESSING - This is the key optimization!
     async def fetch_transactions_for_requisition(requisition_id):
         try:
             print(f"📡 Starting fetch for requisition: {requisition_id}")
